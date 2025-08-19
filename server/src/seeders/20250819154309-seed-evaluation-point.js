@@ -29,10 +29,10 @@ module.exports = {
       { evaluationId: 2, questionId: 10, point: 1 },
     ].map(p => ({ ...p, createdAt: new Date(), updatedAt: new Date() }));
 
-    await queryInterface.bulkInsert('EvaluationPoint', [...evalId1, ...eavlId2], {});
+    await queryInterface.bulkInsert('EvaluationPoints', [...evalId1, ...eavlId2], {});
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('EvaluationPoint', null, {});
+    await queryInterface.bulkDelete('EvaluationPoints', null, {});
   }
 };

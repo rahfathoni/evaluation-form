@@ -1,8 +1,8 @@
 import express from "express"
-import QuestionController from "../controllers/questionController"
+import QuestionsController from "../controllers/questionController"
 
 const router = express.Router()
 
-router.get("/", QuestionController.getQuestions)
+router.get("/", QuestionsController.getQuestionAll)
 
 export default router

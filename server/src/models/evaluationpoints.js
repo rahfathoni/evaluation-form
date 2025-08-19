@@ -2,14 +2,14 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class EvaluationPoint extends Model {
+  class EvaluationPoints extends Model {
     static associate(models) {
-      this.belongsTo(models.Evaluation, { foreignKey: 'evaluationId' });
+      this.belongsTo(models.Evaluations, { foreignKey: 'evaluationId' });
       this.belongsTo(models.Questions, { foreignKey: 'questionId' });
     }
   }
 
-  EvaluationPoint.init({
+  EvaluationPoints.init({
     evaluationId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -28,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'EvaluationPoint',
+    modelName: 'EvaluationPoints',
   });
 
-  return EvaluationPoint;
+  return EvaluationPoints;
 };
