@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 export default function errorHandler(err: any, _req: Request, res: Response, _next: NextFunction): Response<any> {
+  console.error(err);
   if (err.name === "SequelizeValidationError") {
     const errors = err.errors.map((el: any) => ({
       message: el.message

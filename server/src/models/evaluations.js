@@ -48,32 +48,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: {
-          args: true,
-          msg: `Years must be filled`
-        },
-        min: {
-          args: 0,
-          msg: `Years must be at least 0`
-        },
+        min: 0,
       }
     },
     overall_score: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: {
-          args: true,
-          msg: `Overall Score must be filled`
-        },
-        min: {
-          args: 0,
-          msg: `Overall Score must be at least 0`
-        },
-        max: {
-          args: 10,
-          msg: `Overall Score must not exceed 10`
-        }
+        min: 1,
+        max: 10,
       }
     },
     comparation: {

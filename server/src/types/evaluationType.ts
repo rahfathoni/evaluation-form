@@ -37,6 +37,19 @@ export interface IEvaluation {
   overall_score: number
   comparation: string
   comment: string
-  createdAt: string
   answers: IAnswer[]
+  score: number
+  total_questions: number
+  createdAt: string
+}
+
+export interface IEvaluationCreate {
+  firstName: string
+  lastName: string
+  department: string
+  years: number
+  overallScore: number
+  comparation: string
+  comment: string | null
+  answers: Omit<IAnswer, 'question'>[]
 }
