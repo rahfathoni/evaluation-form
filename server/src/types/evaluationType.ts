@@ -16,7 +16,7 @@ export interface IEvaluationResponse {
   years: number
   overall_score: number
   comparation: string
-  comment: string
+  comment: string | null
   createdAt: string
   updatedAt: string
   EvaluationPoints: IEvaluationPoint[]
@@ -36,7 +36,7 @@ export interface IEvaluation {
   years: number
   overall_score: number
   comparation: string
-  comment: string
+  comment: string | null
   answers: IAnswer[]
   score: number
   total_questions: number
