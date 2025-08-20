@@ -1,5 +1,8 @@
 # Server or Backend Side
 
+## DOCKER method, Setup Server and run on Local environment
+see setup in `README.md` root folder
+
 ## MANUAL method, Setup Server and run on Local environment
 
   1. open terminal in server folder
@@ -7,7 +10,7 @@
       ```
       npm install
       ``` 
-  3. go to `.env.template` and change to `.env`, configure your database username, password, and host
+  3. go to `.env.template` and change to `.env`, configure your database username, password, db_name, and host (host to 127.0.0.1)
   4. in server terminal, create your local database
       ```
       npx sequelize-cli db:create
