@@ -7,7 +7,7 @@
       ```
       npm install
       ``` 
-  3. go to `config/config.json`, configure your database username and password
+  3. go to `.env.template` and change to `.env`, configure your database username, password, and host
   4. in server terminal, create your local database
       ```
       npx sequelize-cli db:create
