@@ -3,6 +3,32 @@ import { Evaluations, EvaluationPoints, Questions } from '../models'
 import { FindOptions } from 'sequelize'
 import type { IEvaluation, IEvaluationResponse, IEvaluationPoint, IEvaluationCreate, IAnswer } from '../types/evaluationType'
 
+function evaluationScoring(item: IEvaluationResponse): IEvaluation {
+  const answers = item.EvaluationPoints.map((ans: IEvaluationPoint) => ({
+    questionID: ans.Question.id,
+    question: ans.Question.question,
+    point: ans.point,
+  }))
+
+  const total_questions = answers.length
+  const score = total_questions > 0 ? answers.reduce((sum, a) => sum + a.point, 0) / total_questions : 0
+
+  return {
+    id: item.id,
+    first_name: item.first_name,
+    last_name: item.last_name,
+    department: item.department,
+    years: item.years,
+    overall_score: item.overall_score,
+    comparation: item.comparation,
+    comment: item.comment,
+    answers,
+    score,
+    total_questions,
+    createdAt: item.createdAt,
+  }
+}
+
 export default class EvaluationController {
   static async getEvaluationAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     const options: FindOptions = {
@@ -34,31 +60,7 @@ export default class EvaluationController {
       }
 
       const dataJSON = JSON.parse(JSON.stringify(data))
-      const mappedData: IEvaluation[] = dataJSON.map((item: IEvaluationResponse) => {
-        const answers = item.EvaluationPoints.map((ans: IEvaluationPoint) => ({
-          questionID: ans.Question.id,
-          question: ans.Question.question,
-          point: ans.point,
-        }))
-
-        const total_questions = answers.length
-        const score = answers.reduce((sum, a) => sum + a.point, 0) / total_questions
-
-        return {
-          id: item.id,
-          first_name: item.first_name,
-          last_name: item.last_name,
-          department: item.department,
-          years: item.years,
-          overall_score: item.overall_score,
-          comparation: item.comparation,
-          comment: item.comment,
-          answers,
-          score,
-          total_questions,
-          createdAt: item.createdAt,
-        }
-      })
+      const mappedData = dataJSON.map((item: IEvaluationResponse) => evaluationScoring(item))
 
       res.status(200).json({
         status: 'success',
@@ -101,29 +103,7 @@ export default class EvaluationController {
       }
 
       const dataJSON = JSON.parse(JSON.stringify(data))
-      const answers = dataJSON.EvaluationPoints.map((ans: IEvaluationPoint) => ({
-        questionID: ans.Question.id,
-        question: ans.Question.question,
-        point: ans.point,
-      }))
-
-      const total_questions = answers.length
-      const score = answers.reduce((sum, a) => sum + a.point, 0) / total_questions
-
-      const mappedData: IEvaluation = {
-        id: dataJSON.id,
-        first_name: dataJSON.first_name,
-        last_name: dataJSON.last_name,
-        department: dataJSON.department,
-        years: dataJSON.years,
-        overall_score: dataJSON.overall_score,
-        comparation: dataJSON.comparation,
-        comment: dataJSON.comment,
-        answers,
-        score,
-        total_questions,
-        createdAt: dataJSON.createdAt,
-      }
+      const mappedData = evaluationScoring(dataJSON as IEvaluationResponse)
 
       res.status(200).json({ 
         status: 'success', 
