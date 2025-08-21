@@ -1,16 +1,21 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import Header from '../components/ui/header'
+import Button from '../components/ui/button'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { apiFetch } from '../lib/api'
 import { IEvaluation } from "../types/evaluation";
 
-
 export default function Home() {
+  const router = useRouter()
+  const [showResult, setShowResult] = useState(false)
   const [evaluations, setEvaluations] = useState<IEvaluation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchEvaluation = async () => {
+    setLoading(true)
     try {
       const data = await apiFetch<IApiResponse<IEvaluation[]>>('/evaluation');
       setError(null);
@@ -26,121 +31,59 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const goToForm = () => {
+    router.push('/form');
+  }
+
+  const handlerShowResult = () => {
+    if (!showResult) fetchEvaluation()
+    setShowResult(!showResult)
+  }
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        {/* <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        /> */}
-        {/* <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol> */}
+    <div className="flex min-h-screen flex-col">
+      <Header title="Simulation Evaluation Form" imageSrc="/header-bg.jpg" />
+      <main className="flex-1 mx-auto px-2 lg:px-4 py-8  text-center">
+        <h2 className="text-4xl font-bold text-foreground mb-4">Welcome to the Evaluation Form</h2>
+        <p className="text-gray-700">This is a template for Evaluation Form created with Next.js.</p>
 
-        {/* <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button 
+            className="mt-6" 
+            variant="solid"
+            color="green"
+            onClick={goToForm}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Go To Form
+          </Button>
+          <Button 
+            className="mt-6" 
+            variant={showResult ? "solid" : "outline"}
+            color="black"
+            onClick={handlerShowResult}
           >
-            Read our docs
-          </a>
-        </div> */}
-        <div>
-          {loading && <span>Loading...</span>}
-          {error && <span className="text-red-500">Error: {error}</span>}
-          {!loading && !error && evaluations.length === 0 && <span>No evaluations found</span>}
-          {!loading && !error && evaluations.length > 0 && (
-            <ul className="list-disc pl-5">
-              {evaluations.map((evaluation) => (
-                <li key={evaluation.id}>
-                  {evaluation.first_name} {evaluation.last_name} - Score: {evaluation.score}
-                </li>
-              ))}
-            </ul>
-          )}
+            {showResult ? 'Hide Result' : 'Show Result'}
+          </Button>
         </div>
+        {showResult && (
+          <div className='mt-8'>
+            {loading && <p className="text-gray-500">Loading...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && !error && evaluations.length === 0 && (
+              <p className="text-gray-500">No evaluations available.</p>
+            )}
+            {evaluations && !error && !loading && (
+              <ul className="">
+                {evaluations.map((evaluation) => (
+                  <li key={evaluation.id} className="p-4">
+                    <p className="text-gray-700">{evaluation.first_name} | {evaluation.last_name} | {evaluation.score}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
       </main>
-      {/* <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer> */}
     </div>
   );
 }
