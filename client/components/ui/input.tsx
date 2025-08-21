@@ -1,4 +1,5 @@
 import React from "react"
+import clsx from "clsx"
 
 interface InputProps {
   id: string
@@ -8,6 +9,7 @@ interface InputProps {
   value?: string | number
   min?: number
   max?: number
+  disabled?: boolean
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -19,6 +21,7 @@ export default function Input({
   value,
   min,
   max,
+  disabled = false,
   onChange,
 }: InputProps) {
   return (
@@ -33,7 +36,13 @@ export default function Input({
         onChange={onChange}
         min={min}
         max={max}
-        className="mt-0.5 w-full rounded-lg border border-gray-400 shadow-sm sm:text-sm p-2 focus:border-indigo-500 focus:ring-indigo-500"
+        disabled={disabled}
+        className={clsx(
+          "mt-0.5 w-full rounded-lg border shadow-sm sm:text-sm p-2 focus:border-indigo-500 focus:ring-indigo-500",
+          disabled
+            ? "bg-gray-100 cursor-not-allowed opacity-70 border-gray-300"
+            : "border-gray-400"
+        )}
         required={required}
       />
     </label>

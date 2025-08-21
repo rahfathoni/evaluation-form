@@ -1,16 +1,26 @@
 import React from "react"
 
-type Props = {
+type TextareaProps = {
   label: string
   name: string
-  value: string
+  value: string | null
   onChange: (value: string) => void
   required?: boolean
   placeholder?: string
   rows?: number
+  disabled?: boolean
 }
 
-export default function Textarea({ label, name, value, onChange, required, placeholder, rows = 4 }: Props) {
+export default function Textarea({
+  label,
+  name,
+  value,
+  onChange,
+  required,
+  placeholder,
+  rows = 4,
+  disabled = false,
+}: TextareaProps) {
   return (
     <div className="mb-4">
       <p className="font-medium mb-2">
@@ -18,12 +28,14 @@ export default function Textarea({ label, name, value, onChange, required, place
       </p>
       <textarea
         name={name}
-        value={value}
+        value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        placeholder={placeholder}
+        placeholder={disabled ? "" : placeholder}
         rows={rows}
-        className="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        disabled={disabled}
+        className={`w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none 
+          ${disabled ? "bg-gray-100 text-gray-400 cursor-not-allowed" : ""}`}
       />
     </div>
   )

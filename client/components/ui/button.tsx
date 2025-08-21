@@ -6,10 +6,10 @@ const colorVariants = {
     black: 'bg-black hover:bg-gray-800 text-white',
   },
   outline: {
-    green: 'border border-green-600 text-green-600 hover:bg-green-50',
-    red: 'border border-red-600 text-red-600 hover:bg-red-50',
-    indigo: 'border border-indigo-600 text-indigo-600 hover:bg-indigo-50',
-    black: 'border border-black text-black hover:bg-gray-100',
+    green: 'border border-green-600 text-green-600 hover:bg-green-50 bg-white',
+    red: 'border border-red-600 text-red-600 hover:bg-red-50 bg-white',
+    indigo: 'border border-indigo-600 text-indigo-600 hover:bg-indigo-50 bg-white',
+    black: 'border border-black text-black hover:bg-gray-100 bg-white',
   },
 }
 

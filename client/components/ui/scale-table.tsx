@@ -5,6 +5,7 @@ interface ScaleTableProps {
   value: IAnswers
   label?: string
   onChange: (answers: IAnswers) => void
+  disabled?: boolean
 }
 
 const scaleOptions = [
@@ -12,20 +13,23 @@ const scaleOptions = [
   { value: 4, label: "Agree" },
   { value: 3, label: "Neutral" },
   { value: 2, label: "Disagree" },
-  { value: 1, label: "Strongly Disagree" }
+  { value: 1, label: "Strongly Disagree" },
 ]
 
 export default function ScaleTable({
   questions,
   value,
   label,
-  onChange
+  onChange,
+  disabled = false,
 }: ScaleTableProps) {
   const handleChange = (qid: number, point: number) => {
-    onChange({
-      ...value,
-      [qid]: point
-    })
+    if (!disabled) {
+      onChange({
+        ...value,
+        [qid]: point,
+      })
+    }
   }
 
   return (
@@ -63,7 +67,10 @@ export default function ScaleTable({
                         value={opt.value}
                         checked={value[q.id] === opt.value}
                         onChange={() => handleChange(q.id, opt.value)}
-                        className="cursor-pointer"
+                        disabled={disabled}
+                        className={`${
+                          disabled ? "cursor-not-allowed" : "cursor-pointer"
+                        }`}
                       />
                     </td>
                   ))}

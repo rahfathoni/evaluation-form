@@ -137,7 +137,7 @@ export default function Form() {
             onChange={(e) => setForm({ ...form, lastName: e.target.value })}
           />
         </div>
-        <div className="grid grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <Select
             id="department"
             label="Department"
@@ -147,7 +147,7 @@ export default function Form() {
             options={departmentOptions}
           />
         </div>
-        <div className="grid grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <Input
             id="years"
             label="How many years have you been with this company?"
