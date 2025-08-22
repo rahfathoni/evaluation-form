@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { apiFetch } from '@/lib/api'
 import Button from '@/components/ui/button'
 import FormDetail from '@/components/main/form-detail'
@@ -36,7 +36,7 @@ export default function Form() {
     router.push('/')
   }
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!id) return
     setLoading(true)
     try {
@@ -72,11 +72,11 @@ export default function Form() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [id])
 
   useEffect(() => {
     fetchData()
-  }, [id])
+  }, [fetchData])
 
   if (!id) return <p className="text-center mt-8 text-red-500">ID not found in URL</p>
   if (loading) return <p className="text-center mt-8">Loading...</p>

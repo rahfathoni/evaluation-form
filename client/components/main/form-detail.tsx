@@ -1,7 +1,7 @@
 'use client'
 
 import Input from '../ui/input'
-import Select from '../ui/select'
+// import Select from '../ui/select'
 import ScaleTable from '../ui/scale-table'
 import Rating from '../ui/rating'
 import RadioGroup from '../ui/radio-group'
@@ -23,12 +23,12 @@ interface FormProps {
 }
 
 export default function FormDetail({ form, questions = [], answers = {} }: FormProps) {
-  const departmentOptions = [
-    { value: 'Human Resources', label: 'Human Resources' },
-    { value: 'IT', label: 'IT' },
-    { value: 'Finance', label: 'Finance' },
-    { value: 'Marketing', label: 'Marketing' },
-  ]
+  // const departmentOptions = [
+  //   { value: 'Human Resources', label: 'Human Resources' },
+  //   { value: 'IT', label: 'IT' },
+  //   { value: 'Finance', label: 'Finance' },
+  //   { value: 'Marketing', label: 'Marketing' },
+  // ]
   const comparationOptions = [
     "Much Better",
     "Better",

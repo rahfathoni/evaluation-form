@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { IQuestion, IAnswers } from "../../types/questions"
 
 interface ScaleTableProps {
@@ -6,6 +7,8 @@ interface ScaleTableProps {
   label?: string
   onChange: (answers: IAnswers) => void
   disabled?: boolean
+  required?: boolean
+  onValidityChange?: (isValid: boolean) => void
 }
 
 const scaleOptions = [
@@ -22,7 +25,11 @@ export default function ScaleTable({
   label,
   onChange,
   disabled = false,
+  required = false,
+  onValidityChange,
 }: ScaleTableProps) {
+  const [error, setError] = useState<string | null>(null)
+
   const handleChange = (qid: number, point: number) => {
     if (!disabled) {
       onChange({
@@ -31,6 +38,14 @@ export default function ScaleTable({
       })
     }
   }
+
+  useEffect(() => {
+    if (required) {
+      const unanswered = questions.some(q => value[q.id] === undefined)
+      setError(unanswered ? "All questions are required" : null)
+      if (onValidityChange) onValidityChange(!unanswered)
+    }
+  }, [value, required, questions, onValidityChange])
 
   return (
     <div>
@@ -82,6 +97,7 @@ export default function ScaleTable({
           <p className="text-center text-gray-500">No questions available.</p>
         )}
       </label>
+      {error && <p className="text-red-500 text-sm mt-2 pl-5 font-bold">{error}</p>}
     </div>
   )
 }

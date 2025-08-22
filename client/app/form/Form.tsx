@@ -30,6 +30,8 @@ export default function Form() {
     comments: ''
   })
   const [answers, setAnswers] = useState<IAnswers>({})
+  const [scaleValid, setScaleValid] = useState(false)
+  const [ratingValid, setRatingValid] = useState(false)
 
   const departmentOptions = [
     { value: 'Human Resources', label: 'Human Resources' },
@@ -62,6 +64,7 @@ export default function Form() {
   }
 
   const submitForm = async () => {
+    if (!scaleValid || !ratingValid) return
     setLoading(true)
 
     const formattingAnswer = Object.entries(answers).map(([key, value]) => ({
@@ -169,8 +172,10 @@ export default function Form() {
             questions={questions}
             value={answers}
             disabled={loading}
+            required
             label="How do you feel about management?"
             onChange={setAnswers}
+            onValidityChange={setScaleValid}
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
@@ -181,6 +186,8 @@ export default function Form() {
             disabled={loading}
             onChange={(val) => setForm({ ...form, overallScore: val })}
             start={1}
+            required
+            onValidityChange={setRatingValid}
           />
         </div>
         <div>
@@ -216,6 +223,7 @@ export default function Form() {
               Submit
             </span>
           </Button>
+          {error && <p className="text-red-500 text-sm mt-2 pl-5 font-bold">{error}</p>}
         </div>
       </form>
     </section>
