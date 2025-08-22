@@ -18,7 +18,7 @@ import { IEvaluationAddResponse } from '@/types/evaluation'
 export default function Form() {
   const router = useRouter()
   const [questions, setQuestions] = useState<IQuestion[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState({
     firstName: '',
@@ -40,6 +40,7 @@ export default function Form() {
   const comparationOptions = ["Much Better", "Better", "Same", "Worse", "Much Worse", "Don't Know"]
 
   const fetchQuestions = async () => {
+    setLoading(true)
     try {
       const data = await apiFetch<IApiResponse<IQuestion[]>>('/questions')
       setError(null)
@@ -56,6 +57,7 @@ export default function Form() {
   }
   
   const backToHome = () => {
+    setLoading(true)
     router.push('/')
   }
 
@@ -97,7 +99,6 @@ export default function Form() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', form, answers)
     await submitForm()
   }
 
@@ -111,6 +112,7 @@ export default function Form() {
         className="self-start px-4 py-2 text-sm"
         variant="outline"
         color="black"
+        loading={loading}
         onClick={backToHome}
       >
         <span className="flex items-center gap-2">
@@ -127,6 +129,7 @@ export default function Form() {
             label="First Name"
             required
             value={form.firstName}
+            disabled={loading}
             onChange={(e) => setForm({ ...form, firstName: e.target.value })}
           />
           <Input
@@ -134,6 +137,7 @@ export default function Form() {
             label="Last Name"
             required
             value={form.lastName}
+            disabled={loading}
             onChange={(e) => setForm({ ...form, lastName: e.target.value })}
           />
         </div>
@@ -143,6 +147,7 @@ export default function Form() {
             label="Department"
             required
             value={form.department}
+            disabled={loading}
             onChange={e => setForm({ ...form, department: e.target.value })}
             options={departmentOptions}
           />
@@ -154,6 +159,7 @@ export default function Form() {
             required
             type="number"
             min={0}
+            disabled={loading}
             value={form.years}
             onChange={(e) => setForm({ ...form, years: e.target.value ? Number(e.target.value) : '' })}
           />
@@ -162,6 +168,7 @@ export default function Form() {
           <ScaleTable
             questions={questions}
             value={answers}
+            disabled={loading}
             label="How do you feel about management?"
             onChange={setAnswers}
           />
@@ -171,6 +178,7 @@ export default function Form() {
             label="Overall, how do you rate the organization's management?"
             max={10}
             value={form.overallScore}
+            disabled={loading}
             onChange={(val) => setForm({ ...form, overallScore: val })}
             start={1}
           />
@@ -181,6 +189,7 @@ export default function Form() {
             options={comparationOptions}
             name="management"
             value={form.comparation}
+            disabled={loading}
             onChange={(val) => setForm({ ...form, comparation: val })}
             required
           />
@@ -189,6 +198,7 @@ export default function Form() {
           <Textarea
             label="Comments"
             name="feedback"
+            disabled={loading}
             value={form.comments}
             placeholder="Type your comments here..."
             onChange={(val) => setForm({ ...form, comments: val })}
@@ -200,6 +210,7 @@ export default function Form() {
             variant="solid"
             color="green"
             type="submit"
+            loading={loading}
           >
             <span className="flex items-center gap-2">
               Submit

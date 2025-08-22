@@ -60,14 +60,13 @@ export default function FormDetail({ form, questions = [], answers = {} }: FormP
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-        <Select
+        <Input
           id="department"
           label="Department"
           required
           disabled
           value={form.department}
           onChange={() => {}}
-          options={departmentOptions}
         />
       </div>
 

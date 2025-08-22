@@ -29,7 +29,7 @@ export default function Form() {
 
   const [questions, setQuestions] = useState<IQuestion[]>([])
   const [mappedData, setMappedData] = useState<FormDetailData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const backToHome = () => {
@@ -89,6 +89,7 @@ export default function Form() {
         className="self-start px-4 py-2 text-sm"
         variant="outline"
         color="black"
+        loading={loading}
         onClick={backToHome}
       >
         <span className="flex items-center gap-2">
@@ -96,7 +97,7 @@ export default function Form() {
         </span>
       </Button>
 
-      <p className="text-xl font-medium text-foreground mt-4">Here is previous answer</p>
+      <p className="text-xl font-medium text-foreground mt-4">Here is the previous answer</p>
 
       <FormDetail
         form={mappedData.form}
