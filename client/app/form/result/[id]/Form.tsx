@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { apiFetch } from '@/lib/api'
 import Button from '@/components/ui/button'
 import FormDetail from '@/components/main/form-detail'
@@ -29,14 +29,14 @@ export default function Form() {
 
   const [questions, setQuestions] = useState<IQuestion[]>([])
   const [mappedData, setMappedData] = useState<FormDetailData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const backToHome = () => {
     router.push('/')
   }
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!id) return
     setLoading(true)
     try {
@@ -72,11 +72,11 @@ export default function Form() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [id])
 
   useEffect(() => {
     fetchData()
-  }, [id])
+  }, [fetchData])
 
   if (!id) return <p className="text-center mt-8 text-red-500">ID not found in URL</p>
   if (loading) return <p className="text-center mt-8">Loading...</p>
@@ -89,6 +89,7 @@ export default function Form() {
         className="self-start px-4 py-2 text-sm"
         variant="outline"
         color="black"
+        loading={loading}
         onClick={backToHome}
       >
         <span className="flex items-center gap-2">
@@ -96,7 +97,7 @@ export default function Form() {
         </span>
       </Button>
 
-      <p className="text-xl font-medium text-foreground mt-4">Here is previous answer</p>
+      <p className="text-xl font-medium text-foreground mt-4">Here is the previous answer</p>
 
       <FormDetail
         form={mappedData.form}

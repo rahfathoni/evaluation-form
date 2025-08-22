@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 
 interface RatingProps {
@@ -8,6 +8,8 @@ interface RatingProps {
   start?: number
   onChange: (val: number) => void
   disabled?: boolean
+  required?: boolean
+  onValidityChange?: (isValid: boolean) => void
 }
 
 export default function Rating({
@@ -17,13 +19,24 @@ export default function Rating({
   onChange,
   start = 1,
   disabled = false,
+  required = false,
+  onValidityChange,
 }: RatingProps) {
   const options = Array.from({ length: max - start + 1 }, (_, i) => i + start)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (required) {
+      const isValid = value !== null
+      setError(isValid ? null : "This field is required")
+      if (onValidityChange) onValidityChange(isValid)
+    }
+  }, [value, required, onValidityChange])
 
   return (
     <div>
       <p className="font-medium mb-1">
-        {label} <span className="text-red-500">*</span>
+        {label} {required && <span className="text-red-500">*</span>}
       </p>
 
       <div className="flex items-center justify-between mb-1">
@@ -56,6 +69,7 @@ export default function Rating({
           )
         })}
       </div>
+      {error && <p className="text-red-500 text-sm mt-4 pl-5 font-bold">{error}</p>}
     </div>
   )
 }

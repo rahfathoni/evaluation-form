@@ -1,7 +1,7 @@
 'use client'
 
 import Input from '../ui/input'
-import Select from '../ui/select'
+// import Select from '../ui/select'
 import ScaleTable from '../ui/scale-table'
 import Rating from '../ui/rating'
 import RadioGroup from '../ui/radio-group'
@@ -23,12 +23,12 @@ interface FormProps {
 }
 
 export default function FormDetail({ form, questions = [], answers = {} }: FormProps) {
-  const departmentOptions = [
-    { value: 'Human Resources', label: 'Human Resources' },
-    { value: 'IT', label: 'IT' },
-    { value: 'Finance', label: 'Finance' },
-    { value: 'Marketing', label: 'Marketing' },
-  ]
+  // const departmentOptions = [
+  //   { value: 'Human Resources', label: 'Human Resources' },
+  //   { value: 'IT', label: 'IT' },
+  //   { value: 'Finance', label: 'Finance' },
+  //   { value: 'Marketing', label: 'Marketing' },
+  // ]
   const comparationOptions = [
     "Much Better",
     "Better",
@@ -60,14 +60,13 @@ export default function FormDetail({ form, questions = [], answers = {} }: FormP
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-        <Select
+        <Input
           id="department"
           label="Department"
           required
           disabled
           value={form.department}
           onChange={() => {}}
-          options={departmentOptions}
         />
       </div>
 

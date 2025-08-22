@@ -7,34 +7,35 @@ import { useState } from 'react'
 import { apiFetch } from '../lib/api'
 import { IEvaluation } from "../types/evaluation"
 import TableEvaluation from '../components/main/table-evaluation'
-import { IoEyeSharp } from "react-icons/io5";
+import { IoEyeSharp } from "react-icons/io5"
 
 export default function Home() {
   const router = useRouter()
   const [showResult, setShowResult] = useState(false)
-  const [evaluations, setEvaluations] = useState<IEvaluation[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [evaluations, setEvaluations] = useState<IEvaluation[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const fetchEvaluation = async () => {
     setLoading(true)
     try {
-      const data = await apiFetch<IApiResponse<IEvaluation[]>>('/evaluation');
-      setError(null);
-      setEvaluations(data.result);
+      const data = await apiFetch<IApiResponse<IEvaluation[]>>('/evaluation')
+      setError(null)
+      setEvaluations(data.result)
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message);
+        setError(err.message)
       } else {
-        setError('Unknown error');
+        setError('Unknown error')
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const goToForm = () => {
-    router.push('/form');
+    setLoading(true)
+    router.push('/form')
   }
 
   const handlerShowResult = () => {
@@ -43,6 +44,7 @@ export default function Home() {
   }
 
   const handleView = (id: string | number) => {
+    setLoading(true)
     router.push(`/form/result/${id}`)
   }
 
@@ -58,6 +60,7 @@ export default function Home() {
             className="mt-6" 
             variant="solid"
             color="green"
+            loading={loading}
             onClick={goToForm}
           >
             Go To Form
@@ -66,6 +69,7 @@ export default function Home() {
             className="mt-6" 
             variant={showResult ? "solid" : "outline"}
             color="black"
+            loading={loading}
             onClick={handlerShowResult}
           >
             {showResult ? 'Hide Result' : 'Show Result'}
@@ -97,5 +101,5 @@ export default function Home() {
         )}
       </main>
     </div>
-  );
+  )
 }
