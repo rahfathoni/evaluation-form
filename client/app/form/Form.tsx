@@ -95,7 +95,6 @@ export default function Form() {
       } else {
         setError('Unknown error')
       }
-    } finally {
       setLoading(false)
     }
   }
